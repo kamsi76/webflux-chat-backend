@@ -1,0 +1,62 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.company'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(23)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	/*
+	 * Spring security에서 The bean 'conversionServicePostProcessor', defined in class path resource ...
+	 * 오류 발생하기 때문에 spring-boot-starter-web는 제외 처리 한다.
+	 * 오류 이유가 Spring MVC 기반 Security와 WebFlux 기반 Security를 동시에 로딩하려고 하면서 충돌이 되는 거란다. 
+	 *
+	 * ChatGPT 답변
+	 *	spring-boot-starter-security는 기본적으로 MVC용 보안 설정 (WebSecurityConfiguration)을 로드합니다.
+	 *	spring-boot-starter-webflux와 함께 @EnableWebFluxSecurity를 쓰면 WebFlux 보안 설정 (WebFluxSecurityConfiguration)도 로드됩니다.
+	 *	둘 다 사용되면 conversionServicePostProcessor와 같은 이름의 빈이 중복 정의되어 충돌이 발생합니다.
+	 */
+	implementation('org.springframework.boot:spring-boot-starter-websocket') {
+	    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+	}
+
+	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:r2dbc-postgresql'
+
+    // JWT
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
