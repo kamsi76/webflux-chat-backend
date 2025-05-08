@@ -29,22 +29,37 @@ public class ChatRoomParticipantService {
 	 * @return
 	 */
 	public Mono<List<User>> findParticipantsByRoomId(Long roomId) {
-	    return chatRoomUserRepository.findByChatRoomId(roomId)         // Flux<ChatRoomUser>
+	    return chatRoomUserRepository.findByChatroomId(roomId)         // Flux<ChatRoomUser>
 	             .flatMap(rel -> userRepository.findById(rel.getUserId())) // Flux<User>
 	             .collectList(); // Mono<List<User>>
 	}
 
+	/**
+	 * 채팅방 참여자 정보를 등록한다.
+	 * 등록되어 있는지 여부를 판단하여 등록되어 있지 않은 경우에만 등록을 하도록 한다.
+	 * @param roomId
+	 * @param userId
+	 * @return
+	 */
 	public Mono<Void> registerParticipant(Long roomId, Long userId) {
+
 	    return chatRoomUserRepository.existsByChatroomIdAndUserId(roomId, userId)
 	            .flatMap(exists -> {
+
 	                if (exists) {
 	                    return Mono.empty(); // 이미 등록되어 있음
 	                }
+
 	                ChatRoomUser relation = ChatRoomUser.builder()
 	                                        .chatroomId(roomId)
 	                                        .userId(userId)
 	                                        .build();
 	                return chatRoomUserRepository.save(relation).then();
 	            });
+
+	}
+
+	public Mono<Void> removeParticipant(Long roomId, Long userId) {
+		return chatRoomUserRepository.deleteByChatroomIdAndUserId(roomId, userId);
 	}
 }

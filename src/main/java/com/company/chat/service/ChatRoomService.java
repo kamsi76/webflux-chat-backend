@@ -21,9 +21,11 @@ public class ChatRoomService {
 	private final ChatRoomRepository chatRoomRepository;
 
     // 채팅방 생성
-    public Mono<ChatRoom> createRoom(String name) {
+    public Mono<ChatRoom> createRoom(String name, Long userId) {
+
         ChatRoom room = ChatRoom.builder()
                 .name(name)
+                .creatorId(userId)
                 .createdAt(LocalDateTime.now())
                 .build();
         return chatRoomRepository.save(room);

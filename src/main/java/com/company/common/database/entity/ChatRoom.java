@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table("chat_rooms")
 public class ChatRoom {
-
 	@Id
     private Long id;                     // 채팅방 ID (자동 증가)
     private String name;                // 채팅방 이름
+    private Long creatorId;             // 채팅방 만든 사람(방장)
     private LocalDateTime createdAt;    // 생성일시
 }

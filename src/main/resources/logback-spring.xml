@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
 
-	<property name="LOG_PATH" value="${CURRENT_PATH}/logs" />
+    <property name="LOG_PATH" value="${CURRENT_PATH}/logs" />
 
     <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    	<charset>UTF-8</charset>
+        <charset>UTF-8</charset>
         <encoder>
-		    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
-		</encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
     </appender>
 
     <logger name="reactor.pool" level="ERROR" />
     <logger name="reactor.netty" level="ERROR" />
     <logger name="io.r2dbc" level="ERROR" />
+    <logger name="io.r2dbc.postgresql" level="DEBUG" />
+    <logger name="org.mongodb.driver.cluster" level="ERROR" />
 
     <!-- Spring Security 로깅 설정 -->
     <logger name="org.springframework.beans" level="ERROR" />
     <logger name="org.springframework.security" level="ERROR" />
 
     <!-- Root Logger 설정 -->
-	<root level="DEBUG">
-		<appender-ref ref="STDOUT" />
-	</root>
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
 
 </configuration>
