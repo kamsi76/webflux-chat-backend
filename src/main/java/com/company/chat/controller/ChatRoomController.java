@@ -54,11 +54,26 @@ public class ChatRoomController {
      * @return
      */
     @GetMapping
-    public Mono<ResponseEntity<ApiResponse<List<ChatRoom>>>> getAllRooms(ServerHttpRequest request) {
+    public Mono<ResponseEntity<ApiResponse<List<ChatRoom>>>> selectAllRooms(ServerHttpRequest request) {
 
-        return chatRoomService.getAllRooms()
+        return chatRoomService.selectAllRooms()
                                 .collectList()
                                 .map(rooms -> ResponseEntity.ok(new ApiResponse<>(true, "채팅방 목록", rooms)) );
+    }
+
+    /**
+     * 내가 참여한 채팅방 목록 조회
+     * @param request
+     * @return
+     */
+    @GetMapping("/my")
+    public Mono<ResponseEntity<ApiResponse<List<ChatRoom>>>> selectMyChateRooms(ServerHttpRequest request) {
+
+        User user = (User) request.getAttributes().get("user"); // 필터에서 저장한 사용자 정보
+
+        return chatRoomService.selectMyChateRooms(user.getId())
+                                .collectList()
+                                .map(rooms -> ResponseEntity.ok(new ApiResponse<>(true, "나의채팅방 목록", rooms)) );
     }
 
     /**

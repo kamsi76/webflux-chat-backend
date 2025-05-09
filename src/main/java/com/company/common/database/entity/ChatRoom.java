@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table("chat_rooms")
+@Table("chatrooms")
 public class ChatRoom {
 	@Id
     private Long id;                     // 채팅방 ID (자동 증가)

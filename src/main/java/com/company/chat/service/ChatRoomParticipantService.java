@@ -59,6 +59,12 @@ public class ChatRoomParticipantService {
 
 	}
 
+	/**
+	 * 참여자를 삭제 처리한다.
+	 * @param roomId
+	 * @param userId
+	 * @return
+	 */
 	public Mono<Void> removeParticipant(Long roomId, Long userId) {
 		return chatRoomUserRepository.deleteByChatroomIdAndUserId(roomId, userId);
 	}

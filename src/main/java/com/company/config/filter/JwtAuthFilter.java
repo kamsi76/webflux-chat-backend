@@ -43,11 +43,18 @@ public class JwtAuthFilter implements WebFilter {
         }
 
         //로그인 회원가입과 라우터 정보를 가져오는 경로는 필터에서 제외처리
-        if( path.startsWith("/api/v1/auth") || path.startsWith("/api/v1/routes")) {
+        if(
+                path.startsWith("/api/v1/auth") ||      // 인증관련
+                path.startsWith("/api/v1/routes") ||    // 라우터 처리
+                path.startsWith("/ws/chat")             // 웹소켓
+        ) {
             return chain.filter(exchange);
         }
 
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+
+        System.out.println(path);
+        System.out.println(token);
 
         if( token == null || !token.startsWith("Bearer ")) {
             return writeUnauthorizedResponse(exchange, "Authorization 헤더가 없습니다.");

@@ -14,6 +14,7 @@ public interface ChatRoomUserRepository extends ReactiveCrudRepository<ChatRoomU
 
     /**
      * 특정 채팅방에 해당하는 사용자 목록을 조회한다.
+     * 
      * @param roomId
      * @return Flux<ChatRoomUser>
      */
@@ -21,17 +22,27 @@ public interface ChatRoomUserRepository extends ReactiveCrudRepository<ChatRoomU
 
     /**
      * 채팅방에 사용자가 있는지 여부를 확인한다.
+     * 
      * @param roomId
      * @param userId
      * @return
      */
-	Mono<Boolean> existsByChatroomIdAndUserId(Long roomId, Long userId);
+    Mono<Boolean> existsByChatroomIdAndUserId(Long roomId, Long userId);
 
-	/**
-	 * 체팅방에서 퇴장 처리한다.
-	 * @param roomId
-	 * @param userId
-	 * @return
-	 */
-	Mono<Void> deleteByChatroomIdAndUserId(Long roomId, Long userId);
+    /**
+     * 체팅방에서 퇴장 처리한다.
+     * 
+     * @param roomId
+     * @param userId
+     * @return
+     */
+    Mono<Void> deleteByChatroomIdAndUserId(Long roomId, Long userId);
+
+    /**
+     * 사용자가 등록되어 있는 채팅방 목록 정보를 조회한다.
+     * 
+     * @param userId
+     * @return
+     */
+    Flux<ChatRoomUser> findByUserId(Long userId);
 }
