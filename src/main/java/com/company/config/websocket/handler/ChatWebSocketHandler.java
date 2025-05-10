@@ -50,7 +50,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
         // 해당 채팅방 sink가 없으면 생성
         Sinks.Many<String> roomSink = roomSinkMap.computeIfAbsent(
                                                     roomId,
-                                                    key -> Sinks.many().replay().limit(1) // 마지막 메시지 1개까지 리플레이
+                                                    _ -> Sinks.many().replay().limit(1) // 마지막 메시지 1개까지 리플레이
                                                 );
 
         // 서버가 클라이언트로 전송할 메시지 스트림
